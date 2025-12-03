@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Class Photos</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="header">
+    <div class="brand">Class Gallery</div>
+</header>
+
+<section class="hero">
+    <h1>Your Class Memories</h1>
+    <p>All your class photos in one clean Samsung‑style gallery.</p>
+</section>
+
+<section class="gallery" id="gallery"></section>
+
+<script>
+fetch('./photos/')
+    .then(r => r.text())
+    .then(data => {
+        let g = document.getElementById('gallery');
+        let parser = new DOMParser();
+        let doc = parser.parseFromString(data, 'text/html');
+        doc.querySelectorAll('a').forEach(link => {
+            let href = link.getAttribute('href');
+            if (href.match(/.(jpg|jpeg|png|gif)$/i)) {
+                let img = document.createElement('img');
+                img.src = "photos/" + href;
+                img.className = "photo";
+                g.appendChild(img);
+            }
+        });
+    });
+</script>
+</body>
+</html>
